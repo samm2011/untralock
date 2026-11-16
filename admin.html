@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ADMIN · HOÀNG X DELTA</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{
+    background:radial-gradient(circle at 50% 0%,rgba(34,255,136,.15),transparent 60%),#08080c;
+    color:#e8e8f0;min-height:100vh;display:flex;justify-content:center;
+    align-items:flex-start;padding:30px 20px;
+  }
+  .box{
+    width:100%;max-width:500px;background:linear-gradient(135deg,#12121a,#1a1a24);
+    border:1px solid #22ff88;border-radius:22px;padding:28px;
+    box-shadow:0 0 40px rgba(34,255,136,.2);
+  }
+  h1{
+    font-size:1.45rem;color:#22ff88;margin-bottom:6px;text-align:center;
+    letter-spacing:2px;font-weight:800;
+  }
+  .sub{text-align:center;font-size:.75rem;color:#8a8a9a;margin-bottom:22px;}
+  label{font-size:.72rem;color:#8a8a9a;letter-spacing:1px;display:block;margin-bottom:6px;font-weight:600;}
+  input, select{
+    width:100%;padding:13px;border-radius:12px;border:1px solid #333;
+    background:#0a0a12;color:#fff;font-size:.9rem;margin-bottom:14px;
+    outline:none;transition:.2s;
+  }
+  input:focus, select:focus{border-color:#22ff88;box-shadow:0 0 12px rgba(34,255,136,.4);}
+  select{cursor:pointer;}
+  button{
+    width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;
+    background:linear-gradient(135deg,#22ff88,#00cc66);color:#0a0a0f;
+    font-weight:800;font-size:.95rem;letter-spacing:1px;transition:.2s;
+  }
+  button:hover{transform:translateY(-2px);box-shadow:0 0 25px rgba(34,255,136,.5);}
+  button:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+  .out{
+    margin-top:18px;padding:16px;background:#0a0a12;
+    border:1px dashed #22ff88;border-radius:14px;font-size:.85rem;
+    display:none;word-break:break-all;line-height:1.7;
+  }
+  .out b{color:#22ff88;font-family:monospace;font-size:1.05rem;letter-spacing:1px;}
+  .out .copy{
+    margin-top:10px;padding:9px 16px;background:#22ff88;color:#0a0a0f;
+    border:none;border-radius:8px;cursor:pointer;font-size:.78rem;
+    font-weight:800;width:auto;
+  }
+  .out .copy:hover{transform:scale(1.03);}
+
+  .loading{display:inline-block;width:14px;height:14px;border:2px solid #333;
+    border-top-color:#22ff88;border-radius:50%;animation:spin .7s linear infinite;
+    vertical-align:middle;margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .divider{
+    height:1px;background:linear-gradient(90deg,transparent,#22ff88,transparent);
+    margin:22px 0;opacity:.4;
+  }
+  .stat{
+    display:flex;justify-content:space-between;font-size:.82rem;
+    color:#8a8a9a;padding:8px 0;
+  }
+  .stat b{color:#22ff88;font-size:.95rem;}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>🔒 ADMIN PANEL</h1>
+  <p class="sub">HOÀNG X DELTA · Key Generator v2.0</p>
+
+  <label>MẬT KHẨU ADMIN</label>
+  <input id="secret" type="password" placeholder="Nhập mật khẩu admin..." />
+
+  <label>TÊN NGƯỜI DÙNG</label>
+  <input id="name" placeholder="Tên người dùng..." />
+
+  <label>THỜI HẠN KEY</label>
+  <select id="duration">
+    <option value="1">1 Ngày</option>
+    <option value="7" selected>1 Tuần (7 ngày)</option>
+    <option value="30">1 Tháng (30 ngày)</option>
+    <option value="90">3 Tháng (90 ngày)</option>
+    <option value="365">1 Năm (365 ngày)</option>
+    <option value="forever">♾️ Vĩnh viễn</option>
+  </select>
+
+  <button id="btnCreate" onclick="createKey()">TẠO KEY</button>
+
+  <div class="out" id="out"></div>
+
+  <div class="divider"></div>
+  <div class="stat">Tổng số key: <b id="totalKeys">—</b></div>
+  <div class="stat">Key còn hạn: <b id="activeKeys">—</b></div>
+</div>
+
+<script>
+/* ============================================================
+   ⚙️ CẤU HÌNH — GIỐNG HỆT index.html
+   ============================================================ */
+const JSONBIN_BIN_ID = "DÁN_BIN_ID_VÀO_ĐÂY";
+const JSONBIN_MASTER_KEY = "DÁN_MASTER_KEY_VÀO_ĐÂY";
+const ADMIN_SECRET = "hoangdelta2026";
+const API_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
+
+async function loadKeys(){
+  const res = await fetch(API_URL + "/latest", {
+    headers: { "X-Master-Key": JSONBIN_MASTER_KEY }
+  });
+  const json = await res.json();
+  return json.record || {};
+}
+async function saveKeys(obj){
+  await fetch(API_URL, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": JSONBIN_MASTER_KEY
+    },
+    body: JSON.stringify(obj)
+  });
+}
+
+function genKey(){
+  const r = () => Math.random().toString(36).substring(2,5).toUpperCase()
+               + Math.random().toString(36).substring(2,4).toUpperCase();
+  return "HXD-" + r() + "-" + r() + "-" + r();
+}
+
+async function createKey(){
+  const secret = document.getElementById("secret").value;
+  const name = document.getElementById("name").value.trim();
+  const durationVal = document.getElementById("duration").value;
+  const out = document.getElementById("out");
+  out.style.display = "block";
+
+  if(secret !== ADMIN_SECRET){
+    out.innerHTML = '<span style="color:#ff2d55">❌ Sai mật khẩu admin!</span>'; return;
+  }
+  if(!name){
+    out.innerHTML = '<span style="color:#ff2d55">❌ Nhập tên người dùng!</span>'; return;
+  }
+
+  const btn = document.getElementById("btnCreate");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span> ĐANG TẠO...';
+  out.innerHTML = '<span class="loading"></span> Đang kết nối server...';
+
+  try{
+    const keys = await loadKeys();
+    const key = genKey();
+    let entry;
+
+    if(durationVal === "forever"){
+      entry = { name, type: "forever", expiresAt: null, createdAt: Date.now() };
+    }else{
+      const days = parseInt(durationVal);
+      entry = {
+        name, type: "limited",
+        expiresAt: Date.now() + days * 86400000,
+        days, createdAt: Date.now()
+      };
+    }
+
+    keys[key] = entry;
+    await saveKeys(keys);
+
+    const durationText = durationVal === "forever"
+      ? "VĨNH VIỄN ♾️"
+      : "Hạn: " + entry.days + " ngày";
+
+    out.innerHTML =
+      '✅ Đã tạo key cho <b style="color:#fff">' + name + '</b>:<br><br>' +
+      '<b>' + key + '</b><br>' +
+      '<small style="color:#22ff88">' + durationText + '</small><br>' +
+      '<button class="copy" onclick="copyKey(\'' + key + '\')">📋 COPY KEY</button>';
+
+    updateStats(keys);
+  }catch(e){
+    out.innerHTML = '<span style="color:#ff2d55">❌ Lỗi kết nối server! Kiểm tra JSONBin.</span>';
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "TẠO KEY";
+  }
+}
+
+function copyKey(key){
+  navigator.clipboard.writeText(key).then(() => alert("Đã copy key: " + key))
+    .catch(() => prompt("Copy key bên dưới:", key));
+}
+
+function updateStats(keys){
+  const now = Date.now();
+  let total = 0, active = 0;
+  for(const k in keys){
+    total++;
+    const d = keys[k];
+    if(d.type === "forever" || d.expiresAt === null || d.expiresAt > now) active++;
+  }
+  document.getElementById("totalKeys").textContent = total;
+  document.getElementById("activeKeys").textContent = active;
+}
+
+(async function init(){
+  try{
+    const keys = await loadKeys();
+    updateStats(keys);
+  }catch(e){
+    document.getElementById("totalKeys").textContent = "Lỗi";
+    document.getElementById("activeKeys").textContent = "Lỗi";
+  }
+})();
+</script>
+</body>
+</html>
