@@ -87,15 +87,7 @@
     border:1px solid rgba(255,255,255,.06);border-radius:18px;
     transition:.3s;overflow:hidden;
   }
-  .card-feat::before{
-    content:"";position:absolute;inset:0;border-radius:18px;
-    padding:1px;background:linear-gradient(135deg,var(--c1),var(--c2));
-    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
-    -webkit-mask-composite:xor;mask-composite:exclude;
-    opacity:0;transition:.3s;
-  }
   .card-feat:hover{transform:translateY(-2px) scale(1.005);box-shadow:0 8px 25px rgba(0,0,0,.4);}
-  .card-feat:hover::before{opacity:1;}
 
   .icon-wrap{
     width:52px;height:52px;border-radius:14px;display:flex;
@@ -106,42 +98,18 @@
   .icon-wrap svg{width:26px;height:26px;}
 
   .text-wrap{flex:1;min-width:0;}
-  .text-wrap .title{
-    font-size:.95rem;font-weight:800;font-style:italic;
-    color:var(--cTitle);letter-spacing:.3px;
-  }
-  .text-wrap .desc{
-    font-size:.72rem;color:var(--dim);margin-top:3px;line-height:1.35;
-  }
+  .text-wrap .title{font-size:.95rem;font-weight:800;font-style:italic;color:var(--cTitle);letter-spacing:.3px;}
+  .text-wrap .desc{font-size:.72rem;color:var(--dim);margin-top:3px;line-height:1.35;}
 
   .switch{position:relative;width:50px;height:27px;flex-shrink:0;}
   .switch input{opacity:0;width:0;height:0;}
-  .slider{
-    position:absolute;inset:0;cursor:pointer;border-radius:999px;
-    background:#2a2a35;transition:.3s;border:1px solid #3a3a45;
-  }
-  .slider:before{
-    content:"";position:absolute;height:19px;width:19px;left:3px;top:3px;
-    border-radius:50%;background:#888;transition:.3s;
-  }
-  .switch input:checked + .slider{
-    background:linear-gradient(135deg,var(--red),var(--red2));
-    border-color:var(--red);box-shadow:var(--glow);
-  }
+  .slider{position:absolute;inset:0;cursor:pointer;border-radius:999px;background:#2a2a35;transition:.3s;border:1px solid #3a3a45;}
+  .slider:before{content:"";position:absolute;height:19px;width:19px;left:3px;top:3px;border-radius:50%;background:#888;transition:.3s;}
+  .switch input:checked + .slider{background:linear-gradient(135deg,var(--red),var(--red2));border-color:var(--red);box-shadow:var(--glow);}
   .switch input:checked + .slider:before{transform:translateX(23px);background:#fff;}
 
   .status{width:100%;margin:18px 0 8px;text-align:center;font-size:.75rem;color:var(--dim);}
   .status b{color:var(--red);}
-
-  .getkey{
-    width:100%;margin-top:12px;padding:16px;border:none;border-radius:16px;
-    cursor:pointer;font-weight:800;font-size:1rem;letter-spacing:1px;color:#fff;
-    background:linear-gradient(135deg,#ff0040,#ff2d55,#ff0040);
-    background-size:200% 200%;animation:flow 3s linear infinite;
-    box-shadow:0 0 25px rgba(255,45,85,.5);transition:.2s;
-  }
-  .getkey:hover{transform:scale(1.02);}
-  @keyframes flow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 
   .footer{margin-top:24px;font-size:.68rem;color:#555;text-align:center;}
 
@@ -152,44 +120,10 @@
     box-shadow:var(--glow);opacity:0;transition:.35s;z-index:99;
   }
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-
-  /* Get Key Box */
-  .box{
-    width:100%;background:var(--card);border:1px solid rgba(255,45,85,.4);
-    border-radius:20px;padding:28px;text-align:center;
-    box-shadow:0 0 30px rgba(255,45,85,.3);
-  }
-  .box h1{
-    font-size:1.4rem;margin-bottom:8px;
-    background:linear-gradient(90deg,#fff,#ff2d55);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  }
-  .box p{font-size:.82rem;color:var(--dim);margin-bottom:18px;}
-  .box button{
-    width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;
-    background:linear-gradient(135deg,#ff0040,#ff2d55);color:#fff;
-    font-weight:700;font-size:.95rem;transition:.2s;
-  }
-  .box button:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(255,45,85,.6);}
-  .result{
-    margin-top:18px;padding:16px;border-radius:12px;background:#0a0a12;
-    border:1px dashed var(--red);font-size:.85rem;display:none;line-height:1.6;
-    max-height: 300px; overflow-y: auto;
-  }
-  .back{
-    display:inline-block;margin-top:16px;color:var(--dim);
-    font-size:.78rem;text-decoration:none;cursor:pointer;
-  }
-  .back:hover{color:var(--red);}
-  .loading{display:inline-block;width:14px;height:14px;border:2px solid #555;
-    border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite;
-    vertical-align:middle;margin-right:6px;}
-  @keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
 
-<!-- ========== APP PAGE ========== -->
 <div class="page active" id="pageApp">
   <header>
     <img src="https://files.catbox.moe/qb3hr7.png" alt="avatar" />
@@ -216,139 +150,107 @@
   <div class="features" id="features">
     <!-- 1 -->
     <div class="card-feat" style="--c1:#ff2d55;--c2:#ff0040;--bgIcon:rgba(255,45,85,.12);--glowIcon:rgba(255,45,85,.3);--cTitle:#ff6b8a;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#ff2d55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2d55" stroke-width="2.2"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
       <div class="text-wrap"><div class="title">ULTRALOCK VIP</div><div class="desc">Khóa mục tiêu nâng cao — Bám dính cực mượt</div></div>
       <label class="switch"><input type="checkbox" data-f="ULTRALOCK VIP"><span class="slider"></span></label>
     </div>
     <!-- 2 -->
     <div class="card-feat" style="--c1:#00d4ff;--c2:#0088ff;--bgIcon:rgba(0,212,255,.12);--glowIcon:rgba(0,212,255,.3);--cTitle:#66e0ff;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg></div>
       <div class="text-wrap"><div class="title">ULTRALOCK 120</div><div class="desc">FOV 120° — Bao quát toàn bộ tầm nhìn</div></div>
       <label class="switch"><input type="checkbox" data-f="ULTRALOCK 120"><span class="slider"></span></label>
     </div>
     <!-- 3 -->
     <div class="card-feat" style="--c1:#ff9a3c;--c2:#ff6b00;--bgIcon:rgba(255,154,60,.12);--glowIcon:rgba(255,154,60,.3);--cTitle:#ffb366;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#ff9a3c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#ff9a3c" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></div>
       <div class="text-wrap"><div class="title">HEADSHOT</div><div class="desc">Ưu tiên bắn đầu — Tỉ lệ headshot cực cao</div></div>
       <label class="switch"><input type="checkbox" data-f="HEADSHOT"><span class="slider"></span></label>
     </div>
     <!-- 4 -->
     <div class="card-feat" style="--c1:#a855f7;--c2:#7c3aed;--bgIcon:rgba(168,85,247,.12);--glowIcon:rgba(168,85,247,.3);--cTitle:#c084fc;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7v4a7 7 0 0 0 14 0V9a7 7 0 0 0-7-7z"/><circle cx="12" cy="11" r="2.5"/><path d="M8 22v-2M16 22v-2"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2.2"><path d="M12 2a7 7 0 0 0-7 7v4a7 7 0 0 0 14 0V9a7 7 0 0 0-7-7z"/><circle cx="12" cy="11" r="2.5"/><path d="M8 22v-2M16 22v-2"/></svg></div>
       <div class="text-wrap"><div class="title">HEADLOCK</div><div class="desc">Khóa đầu — Ghim chặt mục tiêu vào tâm</div></div>
       <label class="switch"><input type="checkbox" data-f="HEADLOCK"><span class="slider"></span></label>
     </div>
     <!-- 5 -->
     <div class="card-feat" style="--c1:#ff2d55;--c2:#ff0040;--bgIcon:rgba(255,45,85,.12);--glowIcon:rgba(255,45,85,.3);--cTitle:#ff6b8a;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#ff2d55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/><circle cx="12" cy="12" r="2" fill="#ff2d55"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2d55" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/><circle cx="12" cy="12" r="2" fill="#ff2d55"/></svg></div>
       <div class="text-wrap"><div class="title">AIMLOCK V1</div><div class="desc">Ngắm tự động — Kéo nhẹ tâm tự ghim mục tiêu</div></div>
       <label class="switch"><input type="checkbox" data-f="AIMLOCK V1"><span class="slider"></span></label>
     </div>
     <!-- 6 -->
     <div class="card-feat" style="--c1:#22ff88;--c2:#00cc66;--bgIcon:rgba(34,255,136,.12);--glowIcon:rgba(34,255,136,.3);--cTitle:#5cffaa;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#22ff88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="rgba(34,255,136,.2)"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#22ff88" stroke-width="2.2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="rgba(34,255,136,.2)"/></svg></div>
       <div class="text-wrap"><div class="title">FPS 120</div><div class="desc">Tăng FPS — Mượt mà không giới hạn khung hình</div></div>
       <label class="switch"><input type="checkbox" data-f="FPS 120"><span class="slider"></span></label>
     </div>
     <!-- 7 -->
     <div class="card-feat" style="--c1:#ffd700;--c2:#ff9500;--bgIcon:rgba(255,215,0,.12);--glowIcon:rgba(255,215,0,.3);--cTitle:#ffe44d;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/><circle cx="12" cy="12" r="3" fill="rgba(255,215,0,.3)"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2.2"><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/><circle cx="12" cy="12" r="3" fill="rgba(255,215,0,.3)"/></svg></div>
       <div class="text-wrap"><div class="title">NHẠY MÀN</div><div class="desc">Độ nhạy màn hình — Vuốt mượt, phản hồi tức thì</div></div>
       <label class="switch"><input type="checkbox" data-f="NHẠY MÀN"><span class="slider"></span></label>
     </div>
     <!-- 8 -->
     <div class="card-feat" style="--c1:#ff6b8a;--c2:#ff2d55;--bgIcon:rgba(255,107,138,.12);--glowIcon:rgba(255,107,138,.3);--cTitle:#ff8fa5;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#ff6b8a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-2.5 4-2.5 4s2.5-1 4-2.5"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6b8a" stroke-width="2.2"><path d="M4.5 16.5c-1.5 1.5-2.5 4-2.5 4s2.5-1 4-2.5"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></div>
       <div class="text-wrap"><div class="title">Game Booster Pro</div><div class="desc">Tối ưu RAM & CPU — Giảm lag tức thì, tăng FPS đáng kể</div></div>
       <label class="switch"><input type="checkbox" data-f="Game Booster Pro"><span class="slider"></span></label>
     </div>
     <!-- 9 -->
     <div class="card-feat" style="--c1:#66e0ff;--c2:#00d4ff;--bgIcon:rgba(102,224,255,.12);--glowIcon:rgba(102,224,255,.3);--cTitle:#99ecff;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#66e0ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="#66e0ff"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#66e0ff" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="#66e0ff"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
       <div class="text-wrap"><div class="title">Super Aimlock Elite</div><div class="desc">Bám đầu cao tỉ lệ — Kéo nhẹ tâm tự ghim mục tiêu</div></div>
       <label class="switch"><input type="checkbox" data-f="Super Aimlock Elite"><span class="slider"></span></label>
     </div>
     <!-- 10 -->
     <div class="card-feat" style="--c1:#c084fc;--c2:#a855f7;--bgIcon:rgba(192,132,252,.12);--glowIcon:rgba(192,132,252,.3);--cTitle:#d8b4fe;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="rgba(192,132,252,.2)"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="rgba(192,132,252,.2)"/></svg></div>
       <div class="text-wrap"><div class="title">Network Optimizer</div><div class="desc">Giảm ping game — Kết nối ổn định, chống disconnect</div></div>
       <label class="switch"><input type="checkbox" data-f="Network Optimizer"><span class="slider"></span></label>
     </div>
     <!-- 11 -->
     <div class="card-feat" style="--c1:#ffb366;--c2:#ff9500;--bgIcon:rgba(255,179,102,.12);--glowIcon:rgba(255,179,102,.3);--cTitle:#ffcc88;">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#ffb366" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-3 0-5 2-5 5 0 2 1 3 1 5s-1 3-1 5 2 5 5 5 5-2 5-5-1-3-1-5 1-3 1-5-2-5-5-5z" fill="rgba(255,179,102,.2)"/><path d="M12 8v6M9 11h6"/></svg>
-      </div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#ffb366" stroke-width="2.2"><path d="M12 2c-3 0-5 2-5 5 0 2 1 3 1 5s-1 3-1 5 2 5 5 5 5-2 5-5-1-3-1-5 1-3 1-5-2-5-5-5z" fill="rgba(255,179,102,.2)"/><path d="M12 8v6M9 11h6"/></svg></div>
       <div class="text-wrap"><div class="title">FPS Unlocker + Trick Head</div><div class="desc">Tâm giữ vùng đầu khi kéo — Mượt mà không giới hạn khung</div></div>
       <label class="switch"><input type="checkbox" data-f="FPS Unlocker + Trick Head"><span class="slider"></span></label>
     </div>
   </div>
 
   <div class="status">Trạng thái: <b id="state">CHƯA KÍCH HOẠT</b></div>
-
-  <button class="getkey" onclick="goPage('pageGetKey'); loadAvailableKeys();">🎁 LẤY KEY TỪ ADMIN</button>
   <div class="footer">© 2026 HOÀNG X DELTA · Vercel</div>
-</div>
-
-<!-- ========== GET KEY PAGE ========== -->
-<div class="page" id="pageGetKey">
-  <div class="box">
-    <h1>KHO KEY TỪ ADMIN</h1>
-    <p>Dưới đây là các Key bạn có thể sử dụng</p>
-    
-    <div class="result" id="getResult">
-      <!-- Danh sách key sẽ hiện ở đây -->
-    </div>
-    
-    <a class="back" onclick="goPage('pageApp')">← Quay lại app</a>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 /* ============================================================
-   ⚙️ CẤU HÌNH JSONBIN (BẮT BUỘC ĐIỀN)
+   MÃ HÓA / GIẢI MÃ KEY (Không cần Server)
    ============================================================ */
-const JSONBIN_BIN_ID = "DÁN_BIN_ID_VÀO_ĐÂY";
-const JSONBIN_MASTER_KEY = "DÁN_MASTER_KEY_VÀO_ĐÂY";
-const API_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
+const SECRET_SALT = "HXD@2026#Delta";
 
-async function loadKeys(){
-  try{
-    const res = await fetch(API_URL + "/latest", {
-      headers: { "X-Master-Key": JSONBIN_MASTER_KEY }
-    });
-    const json = await res.json();
-    return json.record || {};
-  }catch(e){ return {}; }
+function encrypt(text) {
+  let result = "";
+  for (let i = 0; i < text.length; i++) {
+    result += String.fromCharCode(text.charCodeAt(i) ^ SECRET_SALT.charCodeAt(i % SECRET_SALT.length));
+  }
+  return btoa(unescape(encodeURIComponent(result))).replace(/=/g, '');
 }
 
-function goPage(id){
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  window.scrollTo(0,0);
+function decrypt(encoded) {
+  try {
+    // Thêm lại padding cho base64
+    while (encoded.length % 4 !== 0) encoded += '=';
+    const text = decodeURIComponent(escape(atob(encoded)));
+    let result = "";
+    for (let i = 0; i < text.length; i++) {
+      result += String.fromCharCode(text.charCodeAt(i) ^ SECRET_SALT.charCodeAt(i % SECRET_SALT.length));
+    }
+    return result;
+  } catch (e) {
+    return null;
+  }
 }
+
 function toast(msg){
   const t = document.getElementById("toast");
   t.textContent = msg; t.classList.add("show");
@@ -362,19 +264,28 @@ function toast(msg){
 let unlocked = false;
 let countdown = null;
 
-async function verifyKey(){
-  const key = document.getElementById("keyInput").value.trim().toUpperCase();
-  if(!key){ toast("Vui lòng nhập key!"); return; }
+function verifyKey(){
+  const keyInput = document.getElementById("keyInput").value.trim();
+  if(!keyInput){ toast("Vui lòng nhập key!"); return; }
 
-  const btn = document.querySelector("#keyInput + button");
-  btn.textContent = "ĐANG KIỂM TRA...";
-  const keys = await loadKeys();
-  btn.textContent = "KÍCH HOẠT";
+  // Giải mã key
+  const decoded = decrypt(keyInput);
+  if(!decoded){
+    toast("Key không hợp lệ hoặc đã bị sai!");
+    return;
+  }
 
-  const data = keys[key];
-  if(!data){ toast("Key không hợp lệ!"); return; }
+  // Định dạng giải mã: TYPE|EXPIRES_AT
+  const parts = decoded.split("|");
+  if(parts.length !== 2){
+    toast("Key bị lỗi cấu trúc!");
+    return;
+  }
 
-  if(data.type === "forever" || data.expiresAt === null){
+  const type = parts[0];
+  const expiresAt = parseInt(parts[1]);
+
+  if(type === "forever"){
     unlocked = true;
     document.getElementById("state").textContent = "ĐÃ KÍCH HOẠT · VĨNH VIỄN ♾️";
     document.getElementById("state").style.color = "#22ff88";
@@ -386,7 +297,10 @@ async function verifyKey(){
     return;
   }
 
-  if(Date.now() > data.expiresAt){ toast("Key đã hết hạn!"); return; }
+  if(Date.now() > expiresAt){
+    toast("Key này đã hết hạn sử dụng!");
+    return;
+  }
 
   unlocked = true;
   document.getElementById("state").textContent = "ĐÃ KÍCH HOẠT ✓";
@@ -395,8 +309,7 @@ async function verifyKey(){
   document.getElementById("features").style.opacity = "1";
   document.getElementById("features").style.pointerEvents = "auto";
   toast("Kích hoạt thành công!");
-
-  startCountdown(data.expiresAt);
+  startCountdown(expiresAt);
 }
 
 function startCountdown(expiresAt){
@@ -434,52 +347,6 @@ document.querySelectorAll(".switch input").forEach(inp => {
     toast(e.target.dataset.f + " → " + (e.target.checked ? "BẬT" : "TẮT"));
   });
 });
-
-/* ============================================================
-   NHẬN KEY TỰ ĐỘNG TỪ ADMIN
-   ============================================================ */
-async function loadAvailableKeys(){
-  const box = document.getElementById("getResult");
-  box.style.display = "block";
-  box.innerHTML = '<span class="loading"></span> Đang tải kho Key...';
-
-  const keys = await loadKeys();
-  let html = "";
-  let count = 0;
-  const now = Date.now();
-
-  for (const key in keys) {
-    const data = keys[key];
-    if (data.type === "forever" || data.expiresAt === null || data.expiresAt > now) {
-      count++;
-      let hanDung = (data.type === "forever" || data.expiresAt === null) ? "Vĩnh viễn" : new Date(data.expiresAt).toLocaleString('vi-VN');
-      html += `
-        <div style="background:#1a0a10; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid #ff2d55; text-align:left;">
-          <div style="font-family:monospace; font-size:1.1rem; color:#22ff88; font-weight:bold; margin-bottom:6px;">${key}</div>
-          <div style="font-size:0.75rem; color:#aaa; margin-bottom:8px;">Hạn: ${hanDung}</div>
-          <button onclick="copyKeyApp('${key}')" style="padding:8px; width:100%; font-size:0.85rem; font-weight:bold; background:linear-gradient(90deg, #ff2d55, #ff0040); color:white; border:none; border-radius:8px; cursor:pointer;">📋 COPY & SỬ DỤNG</button>
-        </div>
-      `;
-    }
-  }
-
-  if (count === 0) {
-    html = "<span style='color:#ff2d55; font-size:0.9rem;'>Hiện chưa có Key nào trên hệ thống. Vui lòng liên hệ Admin!</span>";
-  }
-  
-  box.innerHTML = html;
-}
-
-function copyKeyApp(key) {
-  navigator.clipboard.writeText(key).then(() => {
-    toast("Đã copy Key!");
-    document.getElementById("keyInput").value = key;
-    goPage('pageApp');
-    setTimeout(() => { verifyKey(); }, 500); 
-  }).catch(() => {
-    prompt("Hãy copy thủ công:", key);
-  });
-}
 
 (function init(){ lockAll(); })();
 </script>
